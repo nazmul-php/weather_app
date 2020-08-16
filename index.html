@@ -22,20 +22,38 @@
     <div class="container">
         <form class="col-md-6 m-auto py-5">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <input id="cityName" type="text" class="form-control" placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger">Search</button>
+                    <button onclick="cityWeather()" type="button" class="btn btn-danger">Search</button>
                 </div>
             </div>
         </form>
         <div class="weather-status text-white text-center">
             <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1>Dhaka</h1>
-            <h3><span>38.06</span>&deg;C</h3>
-            <h1 class="lead">Clouds</h1>
+            <h1 id="city">Your City</h1>
+            <h3 id="temp"><span>Temperature</span>&deg;C</h3>
+            <h1 id="weatherCon" class="lead">Weather</h1>
         </div>
     </div>
 
+<script>
+
+function cityWeather(){
+   let cityName = document.getElementById('cityName').value;
+    
+    fetch("https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=246a47f2ea04c09eabf878f64f6884d1")
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('city').innerHTML = data.name +', '+data.sys.country;
+        document.getElementById('temp').innerHTML = Math.ceil(data.main.temp - 273.15) +' °C';
+        document.getElementById('weatherCon').innerHTML = data.weather[0].main;
+    })
+
+    .catch(error => alert('City Name Error'))
+}
+
+
+ </script>
 </body>
 
 </html>
